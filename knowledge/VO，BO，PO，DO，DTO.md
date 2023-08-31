@@ -16,7 +16,7 @@ halo:
 废话不多说，先来看张图  
 看完图估计大部分人就已经有了一个直观的感受了
 
-![Alt text](VO%EF%BC%8CBO%EF%BC%8CPO%EF%BC%8CDO%EF%BC%8CDTO/image.png)
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/VO%EF%BC%8CBO%EF%BC%8CPO%EF%BC%8CDO%EF%BC%8CDTO/image.png)
 面对这个图，让我们先从承上启下的 DTO 开始入手
 
 ## DTO（Data Transfer Object）数据传输对象
