@@ -1,3 +1,14 @@
+---
+title: Page-management-in-InnoDB-space-files
+categories: []
+tags:
+  - MySQL
+  - 转载
+halo:
+  site: http://blog.jamesyoung94.top:8081
+  name: b0f76ad3-75e6-4e44-b62c-4180097c0a00
+  publish: true
+---
 # Page management in InnoDB space files
 #### by Jeremy Cole, [blog.jcole.us](https://blog.jcole.us/2013/01/04/page-management-in-innodb-space-files/) ▪ 2013年1月5日星期六 0:41
 
@@ -10,13 +21,13 @@ Extents and extent descriptors
 
 As described previously, InnoDB pages are normally 16 KiB, and are grouped into 1 MiB blocks of 64 contiguous pages, which is called an “extent”. InnoDB allocates FSP\_HDR and XDES pages at fixed locations within the space, to keep track of which extents are in use, and which pages within each extent are in use. These pages have a pretty simple structure:
 
-![Alt text](Page-management-in-InnoDB-space-files/image.png)
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image.png)
 
 They contain the usual FIL header and trailer, an FSP header (discussed a bit later), and 256 “extent descriptors” or just “descriptors”. They also contain a sizable amount of unused space.
 
 Extent descriptors have the following structure:
 
-![Alt text](Page-management-in-InnoDB-space-files/image-1.png)
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-1.png)
 
 The purpose of the various fields in an extent descriptor are:
 
@@ -32,11 +43,11 @@ List base nodes and list nodes
 
 Lists (or “free lists” as InnoDB calls them) are a fairly generic structure that allows linking multiple related structures together. It consists of two complementary structures, which form a nicely featured on-disk doubly-linked list. The “list base node” has the following structure:
 
-![Alt text](Page-management-in-InnoDB-space-files/image-2.png)
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-2.png)
 
 The base node is stored only once in some high level structure (such as the FSP header). It contains the length of the list, and pointers to the first and last list node in the list. The actual “list nodes” look very similar:
 
-![Alt text](Page-management-in-InnoDB-space-files/image-3.png)
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-3.png)
 
 Instead of storing first and last pointers, of course, the list node stores previous and next pointers.
 
@@ -47,7 +58,7 @@ The file space header and extent lists
 
 Aside from storing the extent descriptor entries themselves, the FSP\_HDR page (which is always page 0 in a space) also stores the FSP header, which contains a lot of lists, so couldn’t easily be described earlier. The structure of the FSP header is as follows:
 
-![Alt text](Page-management-in-InnoDB-space-files/image-4.png)
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-4.png)
 
 The purposes of the non-list related fields in an FSP header are (not in order):
 
@@ -69,7 +80,7 @@ File segments and inodes
 
 File segments and inodes are perhaps where InnoDB terminology and documentation are murkiest. InnoDB overloads the term “inode”, which is in [common use in filesystems](http://en.wikipedia.org/wiki/Inode), and uses it for both INODE _entries_ (a single small structure) and INODE _pages_ (a page type holding many INODE entries). Ignoring the naming confusion for a moment, an INODE entry in InnoDB merely describes a file segment (frequently called an FSEG), and will be referred to as a “file segment INODE” from now on. The INODE pages that contain them have the following structure:
 
-![Alt text](Page-management-in-InnoDB-space-files/image-5.png)
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-5.png)
 
 Each INODE page contains 85 file segment INODE entries (for a 16 KiB page), each of which are 192 bytes. In addition, they contain a list node which is used in the following lists of INODE pages in the FSP\_HDR‘s FSP header structure as described above:
 
@@ -78,7 +89,7 @@ Each INODE page contains 85 file segment INODE entries (for a 16 KiB page), each
 
 A file segment INODE entry has the following structure:
 
-![Alt text](Page-management-in-InnoDB-space-files/image-6.png)
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-6.png)
 
 The purpose of each of the non-list fields in each INODE entry are:
 
@@ -102,7 +113,7 @@ How indexes use file segments
 
 Although INDEX pages haven’t been described yet, one small aspect can be looked at now. The root page of each index’s FSEG header contains pointers to the file segment INODE entries which describe the file segments used by the index. Each index uses one file segment for leaf pages and one for non-leaf (internal) pages. This information is stored in the FSEG header structure (in the INDEX page):
 
-![Alt text](Page-management-in-InnoDB-space-files/image-7.png)
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-7.png)
 
 The space IDs present are somewhat superfluous — they will always be the same as the current space. The page number and offset point to a file segment INODE entry in an INODE page. Both file segments will always be present, even though they may be completely empty.
 
@@ -113,7 +124,7 @@ Tying it all together
 
 The following diagram attempts to illustrate the entire multi-level structure for an index:
 
-![Alt text](Page-management-in-InnoDB-space-files/image-8.png)
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-8.png)
 
 The index root page points to two inodes (file segments), each of which have a fragment array (pointing to up to 32 individual pages from a fragment list), as well as several lists of whole extents, which are linked together using list pointers in the extent descriptors. The extent descriptors are used both to reference an extent as well as to keep track of free pages within an extent. Easy!
 
