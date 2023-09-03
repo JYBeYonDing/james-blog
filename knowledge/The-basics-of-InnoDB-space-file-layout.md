@@ -1,14 +1,3 @@
----
-title: The basics of InnoDB space file layout
-categories: []
-tags:
-  - 转载
-  - MySQL
-halo:
-  site: http://blog.jamesyoung94.top:8081
-  name: a3d9c806-91f1-4648-af97-d8bfb19dfe60
-  publish: true
----
 # The basics of InnoDB space file layout
 #### by Jeremy Cole, [blog.jcole.us](https://blog.jcole.us/2013/01/03/the-basics-of-innodb-space-file-layout/) ▪ 2013年1月4日星期五 15:17
 
@@ -24,10 +13,12 @@ Pages
 Each space is divided into pages, normally 16 KiB each (this can differ for two reasons: if the compile-time define UNIV\_PAGE\_SIZE is changed, or if InnoDB compression is used). Each page within a space is assigned a 32-bit integer page number, often called “offset”, which is actually just the page’s offset from the beginning of the space (not necessarily the file, for multi-file spaces). So, page 0 is located at file offset 0, page 1 at file offset 16384, and so on. (The astute may remember that InnoDB has a limit of 64TiB of data; this is actually a limit per space, and is due primarily to the page number being a 32-bit integer combined with the default page size: 232 x 16 KiB = 64 TiB.)
 
 A page is laid out as follows:
-![Alt text](<https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/The basics of InnoDB space file layout/image.png>)
+
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/The-basics-of-InnoDB-space-file-layout/image.png)
 
 Every page has a 38-byte FIL header and 8-byte FIL trailer (FIL is a shortened form of “file”). The header contains a field which is used to indicate the page type, which determines the structure of the rest of the page. The structure of the FIL header and trailer are:
-![Alt text](<https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/The basics of InnoDB space file layout/image-1.png>)
+
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/The-basics-of-InnoDB-space-file-layout/image-1.png)
 
 The FIL header and trailer contain the following structures (not in order):
 
@@ -45,7 +36,8 @@ Space files
 A space file is just a concatenation of many (up to 232) pages. For more efficient management, pages are grouped into blocks of 1 MiB (64 contiguous pages with the default page size of 16 KiB), and called an “extent”. Many structures then refer only to extents to allocate pages within a space.
 
 InnoDB needs to do some bookkeeping to keep track of all of the pages, extents, and the space itself, so a space file has some mandatory super-structure:
-![Alt text](<https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/The basics of InnoDB space file layout/image-2.png>)
+
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/The-basics-of-InnoDB-space-file-layout/image-2.png)
 
 The first page (page 0) in a space is always an FSP\_HDR or “file space header” page. The FSP\_HDR page contains (confusingly) an FSP header structure, which tracks things like the size of the space and lists of free, fragmented, and full extents. (A more detailed discussion of free space management is reserved for a future post.)
 
@@ -59,7 +51,8 @@ The system space
 ----------------
 
 The system space (space 0) is special in InnoDB, and contains quite a few pages allocated at fixed page numbers to store a wide range of information critical to InnoDB’s operation. Since the system space is a space like any other, it has the required FSP\_HDR, IBUF\_BITMAP, and INODE pages allocated as its first three pages. After that, it is a bit special:
-![Alt text](<https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/The basics of InnoDB space file layout/image-3.png>)
+
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/The-basics-of-InnoDB-space-file-layout/image-3.png)
 
 The following pages are allocated:
 
@@ -77,7 +70,8 @@ Per-table space files
 ---------------------
 
 InnoDB offers a “file per table” mode, which will create a file (which as explained above is actually a space) for each MySQL table created. A better name for this feature may be “space per table” rather than “file per table”. The .ibd file created for each table has the typical space file structure:
-![Alt text](<https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/The basics of InnoDB space file layout/image-4.png>)
+
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/The-basics-of-InnoDB-space-file-layout/image-4.png)
 
 Ignoring “fast index creation” which adds indexes at runtime, after the requisite 3 initial pages, the next pages allocated in the space will be the root pages of each index in the table, in the order they were defined in the table creation. Page 3 will be the root of the clustered index, Page 4 will be the root of the first secondary key, etc.
 
@@ -90,4 +84,4 @@ Next we’ll look at free space management within InnoDB: extent descriptors, fi
 
 ---
 
-Clipped on 2023年9月3日星期日 14:30
+Clipped on 2023年9月3日星期日 14:51
