@@ -15,7 +15,7 @@ halo:
 
 废话不多说，先来看张图  
 看完图估计大部分人就已经有了一个直观的感受了
-
+在用的时候是必须按这个来做吗？当然不是的，系统和系统的复杂度不同，协作水平不同，完全没有必要教条主义
 ![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/VO%EF%BC%8CBO%EF%BC%8CPO%EF%BC%8CDO%EF%BC%8CDTO/image.png)
 面对这个图，让我们先从承上启下的 DTO 开始入手
 
