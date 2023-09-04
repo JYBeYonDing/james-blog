@@ -46,7 +46,6 @@ The INDEX header in each INDEX page is fixed-width and has the following structu
 
 每个**INDEX**页面中的**INDEX头**都是固定宽度的，并且具有以下结构：
 
-
 [![](https://i0.wp.com/jcole.us/blog/files/innodb/20130106/50dpi/INDEX_Header.png)](http://jcole.us/blog/files/innodb/20130106/72dpi/INDEX_Header.png)
 
 The fields stored in this structure are (not in order):
@@ -70,17 +69,27 @@ Record format: redundant versus compact
 
 The COMPACT record format is new in the Barracuda table format, while the REDUNDANT record format is the original one in the Antelope table format (neither of which had a name officially until Barracuda was created). The COMPACT format mostly eliminated information that was redundantly stored in each record and can be obtained from the data dictionary, such as the number of fields, which fields are nullable, and which fields are dynamic length.
 
+**COMPACT**格式基本上消除了每个记录中冗余存储的信息，这些信息可以从数据字典中获取，例如字段数量，哪些字段是可空的，哪些字段是动态长度。
+
+
 An aside on record pointers
 ---------------------------
 
 Record pointers are used in several different places: the Last Insert Position field in the INDEX header, all values in the page directory, and the “next record” pointers in the system records and user records. All records contain a header (which may be variable-width) followed by the actual record data (which may also be variable-width). Record pointers point to the location of the first byte of _record data_, which is effectively “between” the header and the record data. This allows the header to be read by reading backwards from that location, and the record data to be read forward from that location.
 
+记录指针指向记录数据的第一个字节的位置，这实际上位于标题和记录数据之间。这方便读取Header和Record，从该位置向后读取就是Header，并从该位置向前读取就是Record。
+
+
 Since the “next record” pointer in system and user records is always the first field in the header reading backwards from this pointer, this means it is also possible to very efficiently read through all records in a page without having to parse the variable-width record data at all.
+
+这可以使得读取Records非常高效，因为不用考虑可变长度的记录。
 
 System records: infimum and supremum
 ------------------------------------
 
 Every INDEX page contains two system records, called infimum and supremum, at fixed locations (offset 99 and offset 112 respectively) within the page, with the following structure:
+
+每个INDEX页面都包含两个系统记录，称为下确界和上确界，位于页面内的固定位置（分别为偏移99和偏移112），结构如下：
 
 [![](https://i0.wp.com/jcole.us/blog/files/innodb/20130106/50dpi/INDEX_System_Records.png)](http://jcole.us/blog/files/innodb/20130106/72dpi/INDEX_System_Records.png)
 

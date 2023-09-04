@@ -1,3 +1,13 @@
+---
+title: 图解InnoDB
+categories: []
+tags:
+  - MySQL
+halo:
+  site: http://blog.jamesyoung94.top:8081
+  name: c6714dde-3d56-47cf-8964-0e7071d18601
+  publish: true
+---
 # 图解InnoDB
 
 > 参考：https://blog.jcole.us/innodb/
