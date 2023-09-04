@@ -136,6 +136,8 @@ How indexes use file segments
 
 Although INDEX pages haven’t been described yet, one small aspect can be looked at now. The root page of each index’s FSEG header contains pointers to the file segment INODE entries which describe the file segments used by the index. Each index uses one file segment for leaf pages and one for non-leaf (internal) pages. This information is stored in the FSEG header structure (in the INDEX page):
 
+虽然INDEX页面还没有被描述，但现在可以看一个小方面。每个索引的FSEG标头的根页包含指向文件段INODE条目的指针，这些条目描述了索引使用的文件段。每个索引对叶页使用一个文件段，对非叶页（内部）使用一个。此信息存储在FSEG标头结构中（在INDEX页面中）：
+
 ![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-7.png)
 
 The space IDs present are somewhat superfluous — they will always be the same as the current space. The page number and offset point to a file segment INODE entry in an INODE page. Both file segments will always be present, even though they may be completely empty.
@@ -147,9 +149,10 @@ Tying it all together
 
 The following diagram attempts to illustrate the entire multi-level structure for an index:
 
-![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-8.png)
-![Alt text](Page-management-in-InnoDB-space-files/image-9.png)
+![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-9.png)
 The index root page points to two inodes (file segments), each of which have a fragment array (pointing to up to 32 individual pages from a fragment list), as well as several lists of whole extents, which are linked together using list pointers in the extent descriptors. The extent descriptors are used both to reference an extent as well as to keep track of free pages within an extent. Easy!
+
+索引根页面指向两个索引节点（文件段），每个索引节点都有一个片段数组（指向片段列表中最多32个单独的页面），以及几个完整扩展数据块的列表，这些列表使用扩展数据块描述符中的列表指针链接在一起。数据块描述符既用于引用区段，也用于跟踪区段内的空闲页面。
 
 What’s next?
 -------------
