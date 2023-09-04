@@ -148,7 +148,7 @@ Tying it all together
 The following diagram attempts to illustrate the entire multi-level structure for an index:
 
 ![Alt text](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-8.png)
-
+![Alt text](Page-management-in-InnoDB-space-files/image-9.png)
 The index root page points to two inodes (file segments), each of which have a fragment array (pointing to up to 32 individual pages from a fragment list), as well as several lists of whole extents, which are linked together using list pointers in the extent descriptors. The extent descriptors are used both to reference an extent as well as to keep track of free pages within an extent. Easy!
 
 What’s next?

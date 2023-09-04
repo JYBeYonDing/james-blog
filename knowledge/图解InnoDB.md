@@ -42,3 +42,7 @@ INODE page:
 文件段INODE条目:
 ![](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-6.png)
 
+![](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-7.png)
+
+索引
+![](https://cdn.jsdelivr.net/gh/JYBeYonDing/james-blog/knowledge/Page-management-in-InnoDB-space-files/image-8.png)
