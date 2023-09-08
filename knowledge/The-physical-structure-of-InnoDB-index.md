@@ -71,14 +71,12 @@ The COMPACT record format is new in the Barracuda table format, while the REDUND
 
 **COMPACT**格式基本上消除了每个记录中冗余存储的信息，这些信息可以从数据字典中获取，例如字段数量，哪些字段是可空的，哪些字段是动态长度。
 
-
 An aside on record pointers
 ---------------------------
 
 Record pointers are used in several different places: the Last Insert Position field in the INDEX header, all values in the page directory, and the “next record” pointers in the system records and user records. All records contain a header (which may be variable-width) followed by the actual record data (which may also be variable-width). Record pointers point to the location of the first byte of _record data_, which is effectively “between” the header and the record data. This allows the header to be read by reading backwards from that location, and the record data to be read forward from that location.
 
 记录指针指向记录数据的第一个字节的位置，这实际上位于标题和记录数据之间。这方便读取Header和Record，从该位置向后读取就是Header，并从该位置向前读取就是Record。
-
 
 Since the “next record” pointer in system and user records is always the first field in the header reading backwards from this pointer, this means it is also possible to very efficiently read through all records in a page without having to parse the variable-width record data at all.
 
@@ -95,6 +93,9 @@ Every INDEX page contains two system records, called infimum and supremum, at fi
 
 The two system records have a typical record header preceding their location, and the literal strings “infimum” and “supremum” as their only data. A full description of record header fields will be provided in a future post. For now, it is important primarily to observe that the first field (working backwards from the record data, as previously described) is the “next record” pointer.
 
+这里需要注意的是“infimum” and “supremum”向后一个位置，就是 `next record offset`。
+
+
 ### The infimum record
 
 The infimum record represents a value lower than any possible key in the page. Its “next record” pointer points to the user record with the lowest key in the page. Infimum serves as a fixed entry point for sequentially scanning user records.
@@ -102,6 +103,8 @@ The infimum record represents a value lower than any possible key in the page. I
 ### The supremum record
 
 The supremum record represents a key higher than any possible key in the page. Its “next record” pointer is always zero (which represents NULL, and is always an invalid position for an actual record, due to the page headers). The “next record” pointer of the user record with the highest key on the page always points to supremum.
+
+它的“下一条记录”指针始终为零（表示NULL，并且由于页头的原因，对于实际记录来说始终是无效位置）。
 
 User records
 ------------
