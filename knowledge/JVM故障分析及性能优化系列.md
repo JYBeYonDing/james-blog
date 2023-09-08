@@ -1,3 +1,12 @@
+---
+title: JVM故障分析及性能优化系列
+categories: []
+tags: []
+halo:
+  site: http://blog.jamesyoung94.top:8081
+  name: 386d8c15-fa60-4262-b754-b1f0671bed75
+  publish: true
+---
 # JVM 故障分析及性能优化系列
 
 ## [JVM 故障分析及性能优化系列之一：使用 jstack 定位线程堆栈信息](https://www.javatang.com/archives/2017/10/19/33151873.html)
@@ -60,7 +69,7 @@ rm -f $stackfile $threadsfile
 ## [JVM 故障分析及性能优化系列之二：jstack 生成的 Thread Dump 日志结构解析](https://www.javatang.com/archives/2017/10/19/51301886.html)
 
 一个典型的 thread dump 文件主要由一下几个部分组成：
-![Alt text](JVM%E6%95%85%E9%9A%9C%E5%88%86%E6%9E%90%E5%8F%8A%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97/2021-06-01-15-56-09.png)
+![Alt text](http://blog.jamesyoung94.top:8081/upload/2021-06-01-15-56-09.png)
 
 ### 第一部分：Full thread dump identifier
 
